@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { Product, ProductFormData } from '../types/database';
+import ImageUpload from './ImageUpload';
 
 interface ProductFormProps {
   initialData?: Product;
@@ -72,7 +73,7 @@ export default function ProductForm({ initialData, onSubmit, onDelete }: Product
     onDelete(initialData.id);
   };
 
-  const isValid = formData.name.trim() && formData.serial.trim() && formData.image_url.trim() && formData.price > 0;
+  const isValid = formData.name.trim() && formData.serial.trim() && formData.image_url && formData.price > 0;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
@@ -171,20 +172,10 @@ export default function ProductForm({ initialData, onSubmit, onDelete }: Product
         </div>
       </div>
 
-      <div>
-        <label className="block text-sm font-medium text-[#0f2042] mb-1">
-          URL de Imagen <span className="text-red-500">*</span>
-        </label>
-        <input
-          required
-          type="url"
-          name="image_url"
-          value={formData.image_url}
-          onChange={handleChange}
-          placeholder="https://ejemplo.com/imagen.jpg"
-          className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#2563eb] focus:border-transparent transition-all bg-[#f8fafc]"
-        />
-      </div>
+      <ImageUpload
+        value={formData.image_url}
+        onChange={(url) => setFormData(prev => ({ ...prev, image_url: url }))}
+      />
 
       <div className="pt-4 pb-2">
         <button
